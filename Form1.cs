@@ -1,3 +1,4 @@
+using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -11,6 +12,7 @@ namespace Autograding
             Name,
             Input,
             Correct,
+            SrcCode,
             Incorrect,
         }
 
@@ -86,6 +88,20 @@ namespace Autograding
                 if (result == null)
                 {
                     continue;
+                }
+
+                if (result.Count > (int)Anser.SrcCode && result[(int)Anser.SrcCode] != null && result[(int)Anser.SrcCode].Length != 0)
+                {
+                    StreamReader sr = fi.OpenText();
+                    string src_code = sr.ReadToEnd();
+
+                    src_code = Regex.Replace(src_code, "\r\n", "\n");
+                    src_code = Regex.Replace(src_code, @"\n+$", "");
+
+                    if (src_code == result[(int)Anser.SrcCode])
+                    {
+                        continue;
+                    }
                 }
 
                 string strout = "";
@@ -175,10 +191,10 @@ namespace Autograding
                                     {
                                         match = "Å~";
                                     }
-                                    else if (result.Count > (int)Anser.Incorrect && result[(int)Anser.Incorrect] != null && result[(int)Anser.Incorrect].Length != 0 && tmp == result[(int)Anser.Incorrect])
-                                    {
-                                        match = "Å~";
-                                    }
+                                    //else if (result.Count > (int)Anser.Incorrect && result[(int)Anser.Incorrect] != null && result[(int)Anser.Incorrect].Length != 0 && tmp == result[(int)Anser.Incorrect])
+                                    //{
+                                    //    match = "Å~";
+                                    //}
                                     else if (result.Count > (int)Anser.Correct && result[(int)Anser.Correct] != null && result[(int)Anser.Correct].Length != 0 && tmp == result[(int)Anser.Correct])
                                     {
                                         //match = "ÅZ";
