@@ -94,6 +94,7 @@ namespace Autograding
                 {
                     StreamReader sr = fi.OpenText();
                     string src_code = sr.ReadToEnd();
+                    sr.Close();
 
                     src_code = Regex.Replace(src_code, "\r\n", "\n");
                     src_code = Regex.Replace(src_code, @"\n+$", "");
