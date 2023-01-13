@@ -10,6 +10,7 @@ namespace Autograding
         {
             ColumnName,
             Name,
+            SrcName,
             Input,
             Correct,
             SrcCode,
@@ -59,7 +60,6 @@ namespace Autograding
 
             if (is_fopen)
             {
-
                 userList.Clear();
 
                 book = MyExcelBook.CreateBook("result.xlsx");
@@ -68,7 +68,7 @@ namespace Autograding
                 var index = 1;
                 foreach (var t in anserList)
                 {
-                    book.SetValue(t[(int)Anser.Name], t[(int)Anser.ColumnName], 1);
+                    book.SetValue(t[(int)Anser.Name] + "_" + t[(int)Anser.SrcName], t[(int)Anser.ColumnName], 1);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace Autograding
 
                 string exe = System.IO.Path.GetFileNameWithoutExtension(fi.Name) + ".exe";
 
-                List<string> result = anserList.Find(n => fi.FullName.Contains(n[1]));
+                List<string> result = anserList.Find(n => fi.FullName.Contains(n[(int)Anser.Name]) && fi.FullName.Contains(n[(int)Anser.SrcName]));
 
                 if (result == null)
                 {
