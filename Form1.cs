@@ -12,7 +12,8 @@ namespace Autograding
             Name,
             SrcName,
             Input,
-            Correct,
+            Correct0,
+            Correct1,
             SrcCode,
             Incorrect,
         }
@@ -196,7 +197,9 @@ namespace Autograding
                                     //{
                                     //    match = "Å~";
                                     //}
-                                    else if (result.Count > (int)Anser.Correct && result[(int)Anser.Correct] != null && result[(int)Anser.Correct].Length != 0 && tmp == result[(int)Anser.Correct])
+                                    else if (
+                                        (result.Count > (int)Anser.Correct0 && result[(int)Anser.Correct0] != null && result[(int)Anser.Correct0].Length != 0 && tmp == result[(int)Anser.Correct0]) ||
+                                        (result.Count > (int)Anser.Correct1 && result[(int)Anser.Correct1] != null && result[(int)Anser.Correct1].Length != 0 && tmp == result[(int)Anser.Correct1]))
                                     {
                                         //match = "ÅZ";
                                     }
