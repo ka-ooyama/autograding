@@ -51,9 +51,8 @@ namespace Autograding
             }
         }
 
-        private void Form1_DragDrop(object sender, DragEventArgs e)
+        private void exec(string[] files)
         {
-            var files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
 
             MyExcelBook book = null;
             var is_fopen = files.Length > 1;
@@ -257,6 +256,14 @@ namespace Autograding
             {
                 book.Save();
             }
+
+        }
+
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            exec(files);
         }
 
         private void Form1_DragEnter(object sender, DragEventArgs e)
@@ -275,6 +282,33 @@ namespace Autograding
         {
             textBox1.Text = "";
             textBox2.Text = "";
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+            fbd.Description = "フォルダを指定してください。";
+            fbd.RootFolder = Environment.SpecialFolder.Desktop;
+            fbd.SelectedPath = @"C:\Windows";
+            fbd.ShowNewFolderButton = true;
+
+            if (fbd.ShowDialog(this) == DialogResult.OK)
+            {
+//                Console.WriteLine(fbd.SelectedPath);
+                DirectoryInfo di = new DirectoryInfo(fbd.SelectedPath);
+                if (di.Exists)
+                {
+                   FileInfo[] fi_array = di.GetFiles("*.c", SearchOption.AllDirectories);
+                    List<string> files = new List<string>();
+
+                    foreach (FileInfo fi in fi_array)
+                    {
+                        files.Add(fi.FullName);
+                    }
+                    exec(files.ToArray());
+                }
+            }
         }
     }
 }
